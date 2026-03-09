@@ -11,10 +11,13 @@ import { AuthProvider, useAuth } from './contexts/AuthContext';
 import LoginPage from './components/auth/LoginPage';
 import StudentDiagnosticLink from './pages/StudentDiagnosticLink';
 import SeedModePanel from './components/seedmode/SeedModePanel';
+import QuestionTemplatePanel from './components/template/QuestionTemplatePanel';
+import TimeCapsulePanel from './components/timecapsule/TimeCapsulePanel';
+import ClassRankingPanel from './components/ranking/ClassRankingPanel';
 import { useClassify } from './hooks/useClassify';
 import type { Grade, Subject, QuestionHistory } from './types';
 
-type TabId = 'classify' | 'qft' | 'diagnostic' | 'teacher' | 'seed';
+type TabId = 'classify' | 'qft' | 'diagnostic' | 'teacher' | 'seed' | 'template' | 'timecapsule' | 'ranking';
 
 // ── 이론 소개 데이터 ─────────────────────────────────────────────────────────
 interface TheoryInfo {
@@ -199,6 +202,9 @@ const AppInner: React.FC = () => {
   const tabs = [
     { id: 'diagnostic' as TabId, icon: '📊', label: '역량 진단' },
     { id: 'seed'       as TabId, icon: '🌱', label: '씨앗 모드' },
+    { id: 'template'    as TabId, icon: '📋', label: '질문 템플릿' },
+    { id: 'timecapsule' as TabId, icon: '⏳', label: '타임캡슐' },
+    { id: 'ranking'     as TabId, icon: '🏆', label: '클래스 랭킹' },
     { id: 'classify'   as TabId, icon: '🔍', label: '질문 분류' },
     { id: 'qft'        as TabId, icon: '🎯', label: 'QFT 세션' },
     { id: 'teacher'    as TabId, icon: '👩‍🏫', label: '교사 대시보드' },
@@ -324,6 +330,27 @@ const AppInner: React.FC = () => {
           {activeTab === 'seed' && (
             <div style={appStyles.tabContent}>
               <SeedModePanel />
+            </div>
+          )}
+
+          {/* ── 주제별 질문 템플릿 탭 ── */}
+          {activeTab === 'template' && (
+            <div style={appStyles.tabContent}>
+              <QuestionTemplatePanel />
+            </div>
+          )}
+
+          {/* ── 질문 타임캡슐 탭 ── */}
+          {activeTab === 'timecapsule' && (
+            <div style={appStyles.tabContent}>
+              <TimeCapsulePanel />
+            </div>
+          )}
+
+          {/* ── 클래스 랭킹 탭 ── */}
+          {activeTab === 'ranking' && (
+            <div style={appStyles.tabContent}>
+              <ClassRankingPanel />
             </div>
           )}
 
@@ -460,8 +487,8 @@ const appStyles: Record<string, React.CSSProperties> = {
   backBtn: { background: 'rgba(255,255,255,0.8)', border: '1px solid #e5e7eb', borderRadius: 8, padding: '8px 14px', cursor: 'pointer', fontSize: 13, fontWeight: 600, fontFamily: "'Noto Sans KR', sans-serif" },
   main: { padding: '24px 20px 60px' },
   container: { maxWidth: '860px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '16px' },
-  tabBar: { display: 'flex', gap: '6px', padding: '4px', background: '#fff', borderRadius: '14px', boxShadow: '0 1px 4px rgba(0,0,0,0.06)' },
-  tabBtn: { flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', padding: '11px', borderRadius: '10px', border: 'none', fontSize: '14px', fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s', fontFamily: "'Noto Sans KR', sans-serif" },
+  tabBar: { display: 'flex', flexWrap: 'nowrap', gap: '6px', padding: '4px', background: '#fff', borderRadius: '14px', boxShadow: '0 1px 4px rgba(0,0,0,0.06)', overflowX: 'auto', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none' } as React.CSSProperties,
+  tabBtn: { flex: '0 0 auto', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px', padding: '9px 12px', borderRadius: '10px', border: 'none', fontSize: '13px', fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s', fontFamily: "'Noto Sans KR', sans-serif", whiteSpace: 'nowrap' } as React.CSSProperties,
   tabContent: { display: 'flex', flexDirection: 'column', gap: '16px', animation: 'fadeIn 0.3s ease' },
   loadingCard: { display: 'flex', gap: '16px', alignItems: 'center', padding: '24px', background: '#fff', borderRadius: '16px', boxShadow: '0 1px 4px rgba(0,0,0,0.06)', border: '2px solid #ede9fe' },
   loadingSpinner: { width: '40px', height: '40px', flexShrink: 0, border: '3px solid #ede9fe', borderTopColor: '#6366f1', borderRadius: '50%', animation: 'spin 0.8s linear infinite' },
